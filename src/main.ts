@@ -1,7 +1,6 @@
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory, Reflector } from '@nestjs/core'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import * as cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 import * as morgan from 'morgan'
@@ -12,11 +11,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   const configService = app.get(ConfigService)
   const reflector = app.get(Reflector)
-  const config = new DocumentBuilder()
-    .setTitle('Store API')
-    .setDescription('The Store API description')
-    .addTag('Store').build()
-  const document = SwaggerModule.createDocument(app, config)
   const corsOrigins = configService.get<string>('CORS_ORIGIN', '')
   const allowedOrigins = corsOrigins ? corsOrigins.split(',') : '*'
 
@@ -26,7 +20,6 @@ async function bootstrap() {
   app.use(cookieParser())
   app.useGlobalInterceptors(new TransformInterceptor(reflector))
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }))
-  SwaggerModule.setup('docs', app, document)
 
   app.enableCors({
     origin: allowedOrigins.length > 1 ? allowedOrigins : allowedOrigins[0],

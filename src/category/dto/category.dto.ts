@@ -1,16 +1,13 @@
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsMongoId, IsNumber, IsOptional, IsString, MaxLength, MinLength, IsNotEmpty } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateCategoryDto {
-  @ApiProperty({ description: 'Tên danh mục' })
   @IsString()
   @IsNotEmpty()
   @MinLength(2, { message: 'Tên danh mục phải có ít nhất 2 ký tự' })
   @MaxLength(100, { message: 'Tên danh mục không được quá 100 ký tự' })
   name: string;
 
-  @ApiPropertyOptional({ description: 'Mô tả về danh mục' })
   @IsString()
   @IsOptional()
   @MaxLength(500, { message: 'Mô tả không được quá 500 ký tự' })
@@ -33,13 +30,11 @@ export class CreateCategoryDto {
   @Transform(({ value }) => parseInt(value, 10))
   level?: number;
 
-  @ApiPropertyOptional({ description: 'Thứ tự hiển thị' })
   @IsNumber()
   @IsOptional()
   @Transform(({ value }) => parseInt(value, 10))
   order?: number;
 
-  @ApiPropertyOptional({ description: 'Trạng thái kích hoạt', default: true })
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => value === 'true' || value === true)
