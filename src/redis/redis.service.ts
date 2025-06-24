@@ -62,10 +62,10 @@ export class RedisService {
 
   async clearAllCacheAddress(): Promise<void> {
     try {
-      const reviewKeys = await this.scanKeys('address_*'); // Match all review-related keys
-      await this.deleteKeys(reviewKeys); // Delete all the found keys
+      const addressKeys = await this.scanKeys('address_*'); // Match all address-related keys
+      await this.deleteKeys(addressKeys); // Delete all the found keys
     } catch (error) {
-      console.error('Error clearing review cache:', error);
+      console.error('Error clearing address cache:', error);
     }
   }
 }
