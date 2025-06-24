@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateApiKeyDto {
   @IsString()
@@ -7,5 +7,7 @@ export class CreateApiKeyDto {
 }
 export class CreateArrApiKeyDto {
   @IsNotEmpty()
-  keys: [string];
+  @IsArray()
+  @IsString({ each: true })
+  keys: string[];
 }
